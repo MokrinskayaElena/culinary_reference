@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+            $table->string('phone')->nullable()->after('email'); // добавляем телефон
+            $table->unsignedTinyInteger('is_admin')->default(0)->after('remember_token'); // добавляем признак администратора
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
@@ -41,7 +43,10 @@ return new class extends Migration
      * Reverse the migrations.
      */
     public function down(): void
-    {
+    {  
+        //  Schema::table('users', function (Blueprint $table) {
+        //     $table->dropColumn(['phone', 'is_admin']); // удаляем поля при откате
+        // });
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
